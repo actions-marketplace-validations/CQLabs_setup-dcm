@@ -27,9 +27,9 @@ jobs:
         run: dart pub get
 
       - name: Install DCM
-        uses: CQLabs/setup-dcm@v1
+        uses: CQLabs/setup-dcm@v2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run DCM
         run: dcm analyze --ci-key="${{ secrets.DCM_CI_KEY }}" --email="${{ secrets.DCM_EMAIL }}" lib
@@ -38,29 +38,31 @@ jobs:
 Alternatively, the last step can be replaced with a [dedicated DCM GitHub Action that runs DCM checks](https://github.com/CQLabs/dcm-action):
 
 ```yml
-      - name: Run DCM
-        uses: CQLabs/dcm-action@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          ci_key: ${{ secrets.DCM_CI_KEY }}
-          email: ${{ secrets.DCM_EMAIL }}
-          folders: lib
+- name: Run DCM
+  uses: CQLabs/dcm-action@v2
+  with:
+    github-token: ${{ secrets.GITHUB_TOKEN }}
+    ci-key: ${{ secrets.DCM_CI_KEY }}
+    email: ${{ secrets.DCM_EMAIL }}
+    folders: lib
 ```
 
 ## Inputs
 
 The action takes the following inputs:
 
-* `github_token`: Used to get the latest DCM version from GitHub releases (required).
-* `version`: Which DCM version to setup:
-  * A specific DCM version (ex. `1.6.0`)
-  * or `latest` (default)
+- `github-token`: Used to get the latest DCM version from GitHub releases (required).
+- `version`: Which DCM version to setup:
+  - A specific DCM version (ex. `1.30.0`)
+  - or `latest` (default)
+  - or `auto` (to reuse the version constraint from `dcm_global.yaml` described [here](https://dcm.dev/docs/configuration/global-configuration/))
+- `working-directory`: The working directory in which to look for the `dcm_global.yaml` file.
 
 ## Outputs
 
 The action produces the following output:
 
-* `dcm-version`: The version of the DCM executable that was installed.
+- `dcm-version`: The version of the DCM executable that was installed.
 
 ## License
 
